@@ -1,22 +1,37 @@
 import React from 'react';
+import editAvatarImg from '../images/edit-avatar.png';
+import api from '../utils/api';
+import Card from './Card';
 
-function Main() {
-	const handleEditAvatarClick = () => {
-		const popup = document.querySelector('.popup__update-avatar-form');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
+function Main(props) {
+	const [ userName, setUserName ] = React.useState({ name: '' });
+	const [ userDescription, setUserDescription ] = React.useState({ about: '' });
+	const [ userAvatar, setUserAvatar ] = React.useState({ avatar: '' });
+	const [ cards, setCards ] = React.useState([]);
+
+	/* Взять из сервера карточки и ифнормацию о пользователе и добавить на страницу: */
+
+	Promise.all([ api.getInitalCards(), api.getInitalInfo() ])
+		.then(([ cards, info ]) => {
+			setUserAvatar(info.avatar);
+			setUserName(info.name);
+			setUserDescription(info.about);
+			setCards(cards);
+		})
+		.catch((err) => {
+			console.error(err);
+		});
+
+	const onEditAvatar = () => {
+		props.onEditAvatar(props.onClick);
 	};
 
-	const handleEditProfileClick = () => {
-		const popup = document.querySelector('.popup-profile');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
+	const onEditProfile = () => {
+		props.onEditProfile(props.onClick);
 	};
 
-	const handleAddPlaceClick = () => {
-		const popup = document.querySelector('.popup-mesto');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
+	const onAddPlace = () => {
+		props.onAddPlace(props.onClick);
 	};
 
 	return (
@@ -24,44 +39,26 @@ function Main() {
 			<section class="profile">
 				<div class="profile__info">
 					<div class="profile__container-avatar">
-						<img
-							src="<%=require('./images/profile__avatar.jpg')%>"
-							alt="avatar"
-							class="profile__avatar"
-						/>
-						<button class="profile__edit-avatar" onClick={handleEditAvatarClick}>
-							<img
-								src="<%=require('./images/edit-avatar.png')%>"
-								alt="avatar"
-								class="profile__edit"
-							/>
+						<img src={`${userAvatar}`} alt="avatar" class="profile__avatar" />
+						<button class="profile__edit-avatar" onClick={onEditAvatar}>
+							<img src={`${editAvatarImg}`} alt="avatar" class="profile__edit" />
 						</button>
 					</div>
 					<div class="profile__text">
 						<div class="profile__name-and-edit">
-							<p class="profile__name">Жак-Ив Кусто</p>
-							<button class="profile__edit-button" onClick={handleEditProfileClick} />
+							<p class="profile__name">{`${userName}`}</p>
+							<button class="profile__edit-button" onClick={onEditProfile} />
 						</div>
-						<p class="profile__description">Исследователь океана</p>
+						<p class="profile__description">{`${userDescription}`}</p>
 					</div>
 				</div>
-				<button class="profile__add-button" onClick={handleAddPlaceClick} />
+				<button class="profile__add-button" onClick={onAddPlace} />
 			</section>
 
 			<section class="elements">
-				<template id="elements-template">
-					<div class="elements__element">
-						<img src="" alt="image" class="elements__image" />
-						<button class="elements__delete" />
-						<div class="elements__container">
-							<p class="elements__name" />
-							<div>
-								<div class="elements__like" />
-								<p class="elements__count-like" />
-							</div>
-						</div>
-					</div>
-				</template>
+				{cards.map((card) => (
+					<Card key={card._id} card={card} onCardClick={props.onCardClick} />
+				))}
 			</section>
 		</main>
 	);

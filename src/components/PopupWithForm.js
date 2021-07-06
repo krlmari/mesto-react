@@ -2,7 +2,7 @@ import React from 'react';
 
 function PopupWithForm(props) {
 	return (
-		<div className={`popup popup${props.name}`}>
+		<div className={`popup popup${props.name} ${props.isOpen && 'popup__opened'}`}>
 			<div className="popup__container">
 				<form name={props.name} className="form" novalidate>
 					<h2 className="form__header">`${props.title}`</h2>
@@ -12,7 +12,7 @@ function PopupWithForm(props) {
 							Сохранить
 						</button>
 					</fieldset>
-					<button class="form__close-button" type="button" />
+					<button className="form__close-button" type="button" />
 				</form>
 			</div>
 		</div>

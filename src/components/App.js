@@ -1,14 +1,67 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
+import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 
 function App() {
+	const [ isEditAvatarPopupOpen, setEditAvatarPopupOpen ] = React.useState(false);
+	const [ isEditProfilePopupOpen, setEditProfilePopupOpen ] = React.useState(false);
+	const [ isAddPlacePopupOpen, setAddPlacePopupOpen ] = React.useState(false);
+	const [ selectedCard, setSelectedCard ] = React.useState({ link: '', name: '' });
+
+	const handleEditAvatarClick = () => {
+		setEditAvatarPopupOpen(true);
+
+		const popup = document.querySelector('.popup__update-avatar-form');
+		popup.classList.add('popup__opened');
+		document.body.classList.add('body__overflow');
+	};
+
+	const handleEditProfileClick = () => {
+		setEditProfilePopupOpen(true);
+
+		const popup = document.querySelector('.popup-profile');
+		popup.classList.add('popup__opened');
+		document.body.classList.add('body__overflow');
+	};
+
+	const handleAddPlaceClick = () => {
+		setAddPlacePopupOpen(true);
+
+		const popup = document.querySelector('.popup-mesto');
+		popup.classList.add('popup__opened');
+		document.body.classList.add('body__overflow');
+	};
+
+	const handleCardClick = (card) => {
+		setSelectedCard(card);
+	};
+
+	const closeAllPopups = () => {
+		setEditAvatarPopupOpen(false);
+		setEditProfilePopupOpen(false);
+		setAddPlacePopupOpen(false);
+		setSelectedCard({ link: '', name: '' });
+
+		const popups = document.querySelectorAll('.popup');
+		popups.forEach((popup) => {
+			popup.classList.remove('popup__opened');
+		});
+		document.body.classList.remove('body__overflow');
+	};
+
 	return (
 		<div className="App root">
 			<div class="page">
 				<Header />
-				<Main />
+				<Main
+					onEditAvatar={handleEditAvatarClick}
+					onEditProfile={handleEditProfileClick}
+					onAddPlace={handleAddPlaceClick}
+					onCardClick={handleCardClick}
+				/>
+				<ImagePopup card={selectedCard} onClose={closeAllPopups} />
 				<Footer />
 
 				<div class="popup popup-profile">
@@ -47,7 +100,11 @@ function App() {
 									Сохранить
 								</button>
 							</fieldset>
-							<button class="form__close-button" type="button" />
+							<button
+								class="form__close-button"
+								type="button"
+								onClick={closeAllPopups}
+							/>
 						</form>
 					</div>
 				</div>
@@ -86,16 +143,12 @@ function App() {
 									Сохранить
 								</button>
 							</fieldset>
-							<button class="form__close-button close-button" type="button" />
+							<button
+								class="form__close-button close-button"
+								type="button"
+								onClick={closeAllPopups}
+							/>
 						</form>
-					</div>
-				</div>
-
-				<div class="popup popup__card">
-					<div class="popup__card_content">
-						<img src="" alt="popup__card_image" class="popup__card_image" />
-						<p class="popup__card_text" />
-						<button class="close-button form__close-button" />
 					</div>
 				</div>
 
@@ -106,7 +159,11 @@ function App() {
 							<button class="popup__delete-button" type="submit">
 								Да
 							</button>
-							<button class="form__close-button" type="button" />
+							<button
+								class="form__close-button"
+								type="button"
+								onClick={closeAllPopups}
+							/>
 						</form>
 					</div>
 				</div>
@@ -132,7 +189,11 @@ function App() {
 									Сохранить
 								</button>
 							</fieldset>
-							<button class="form__close-button close-button" type="button" />
+							<button
+								class="form__close-button close-button"
+								type="button"
+								onClick={closeAllPopups}
+							/>
 						</form>
 					</div>
 				</div>
