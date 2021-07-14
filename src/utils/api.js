@@ -56,7 +56,7 @@ class Api {
 			method: 'PATCH',
 			headers: this._headers,
 			body: JSON.stringify({
-				avatar: newUserAvatar.src
+				avatar: newUserAvatar.avatar
 			})
 		});
 	}
