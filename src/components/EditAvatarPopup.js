@@ -23,14 +23,14 @@ function EditAvatarPopup(props) {
 		>
 			<input
 				ref={avatarRef}
-				class="form__input form__input-down form__input_src"
+				className="form__input form__input-down form__input_src"
 				id="input-src"
 				arial-label="Src"
 				placeholder="Ссылка на картинку"
 				name="src"
 				required
 			/>
-			<span class="input-src-error form__input-error" />
+			<span className="input-src-error form__input-error" />
 		</PopupWithForm>
 	);
 }

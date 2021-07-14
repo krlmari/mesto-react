@@ -3,6 +3,7 @@ import Header from './Header';
 import Main from './Main';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -67,15 +68,25 @@ function App() {
 		const isLiked = card.likes.some((item) => item._id === currentUser._id);
 
 		// Отправляем запрос в API и получаем обновлённые данные карточки
-		api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-			setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-		});
+		api
+			.changeLikeCardStatus(card._id, !isLiked)
+			.then((newCard) => {
+				setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
 
 	function handleCardDelete(card) {
-		api.deleteLike(card.id).then(() => {
-			setCards(cards.filter((c) => c._id !== card._id));
-		});
+		api
+			.deleteCard(card._id)
+			.then(() => {
+				setCards(cards.filter((c) => c._id !== card._id));
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	}
 
 	const handleUpdateUser = (data) => {
@@ -95,6 +106,18 @@ function App() {
 			.updateUserAvatar(data)
 			.then((res) => {
 				setCurrentUser(res);
+				closeAllPopups();
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	const handleAddPlaceSubmit = (data) => {
+		api
+			.addNewCards(data)
+			.then((newCard) => {
+				setCards([ newCard, ...cards ]);
 				closeAllPopups();
 			})
 			.catch((err) => {
@@ -127,50 +150,12 @@ function App() {
 						onClose={closeAllPopups}
 						onUpdateAvatar={handleUpdateAvatar}
 					/>
+					<AddPlacePopup
+						isOpen={isAddPlacePopupOpen}
+						onClose={closeAllPopups}
+						onAddPlace={handleAddPlaceSubmit}
+					/>
 					<Footer />
-
-					<div class="popup popup-mesto">
-						<div class="popup__container">
-							<form action="" class="form" novalidate>
-								<h2 class="form__header">Новое место</h2>
-								<fieldset class="form__feild">
-									<div class="form__conteiner">
-										<input
-											type="text"
-											class="form__input form__input-up form__input_title"
-											id="input-title"
-											arial-label="Title"
-											placeholder="Название"
-											name="title"
-											required
-											minlength="2"
-											maxlength="30"
-										/>
-										<span class="input-title-error form__input-error" />
-
-										<input
-											type="url"
-											class="form__input form__input-down form__input_src"
-											id="input-src"
-											arial-label="Src"
-											placeholder="Ссылка на картинку"
-											name="src"
-											required
-										/>
-										<span class="input-src-error form__input-error" />
-									</div>
-									<button class="form__save-button" type="submit">
-										Сохранить
-									</button>
-								</fieldset>
-								<button
-									class="form__close-button close-button"
-									type="button"
-									onClick={closeAllPopups}
-								/>
-							</form>
-						</div>
-					</div>
 
 					<div class="popup popup__delete-card">
 						<div class="popup__container popup__delete-container">

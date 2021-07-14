@@ -26,8 +26,8 @@ class Api {
 		return this._sendFetch(`cards`, {
 			method: 'POST',
 			body: JSON.stringify({
-				name: newPost.title,
-				link: newPost.src
+				name: newPost.name,
+				link: newPost.link
 			}),
 			headers: this._headers
 		});

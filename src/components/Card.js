@@ -19,7 +19,7 @@ function Card(props) {
 	// Определяем, являемся ли мы владельцем текущей карточки
 	const isOwn = props.card.owner._id === currentUser._id;
 
-	const cardDeleteButtonClassName = `elements__delete ${isOwn ? '.elements__delete_active' : ''}`;
+	const cardDeleteButtonClassName = `elements__delete ${isOwn ? 'elements__delete_active' : ''}`;
 
 	// Определяем, есть ли у карточки лайк, поставленный текущим пользователем
 	const isLiked = props.card.likes.some((item) => item._id === currentUser._id);
