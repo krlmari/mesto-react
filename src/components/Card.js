@@ -8,6 +8,14 @@ function Card(props) {
 		props.onCardClick(props.card);
 	}
 
+	function handleLikeClick() {
+		props.onCardLike(props.card);
+	}
+
+	function handleDeleteClick() {
+		props.onCardDelete(props.card);
+	}
+
 	// Определяем, являемся ли мы владельцем текущей карточки
 	const isOwn = props.card.owner._id === currentUser._id;
 
@@ -26,11 +34,11 @@ function Card(props) {
 				className="elements__image"
 				onClick={handleClick}
 			/>
-			<button className={cardDeleteButtonClassName} />
+			<button className={cardDeleteButtonClassName} onClick={handleDeleteClick} />
 			<div className="elements__container">
 				<p className="elements__name">{`${props.card.name}`}</p>
 				<div>
-					<div className={cardLikeButtonClassName} />
+					<div className={cardLikeButtonClassName} onClick={handleLikeClick} />
 					<p className="elements__count-like">{`${props.card.likes.length}`}</p>
 				</div>
 			</div>
