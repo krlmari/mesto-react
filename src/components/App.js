@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Main from './Main';
+import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from './ImagePopup';
 import Footer from './Footer';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -39,26 +40,14 @@ function App() {
 
 	const handleEditAvatarClick = () => {
 		setEditAvatarPopupOpen(true);
-
-		const popup = document.querySelector('.popup__update-avatar-form');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
 	};
 
 	const handleEditProfileClick = () => {
 		setEditProfilePopupOpen(true);
-
-		const popup = document.querySelector('.popup-profile');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
 	};
 
 	const handleAddPlaceClick = () => {
 		setAddPlacePopupOpen(true);
-
-		const popup = document.querySelector('.popup-mesto');
-		popup.classList.add('popup__opened');
-		document.body.classList.add('body__overflow');
 	};
 
 	const handleCardClick = (card) => {
@@ -70,12 +59,6 @@ function App() {
 		setEditProfilePopupOpen(false);
 		setAddPlacePopupOpen(false);
 		setSelectedCard({ link: '', name: '' });
-
-		const popups = document.querySelectorAll('.popup');
-		popups.forEach((popup) => {
-			popup.classList.remove('popup__opened');
-		});
-		document.body.classList.remove('body__overflow');
 	};
 
 	function handleCardLike(card) {
@@ -94,10 +77,22 @@ function App() {
 		});
 	}
 
+	const handleUpdateUser = (data) => {
+		api
+			.updateUserInfo(data)
+			.then((res) => {
+				setCurrentUser(res);
+				closeAllPopups();
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="App root">
-				<div class="page">
+				<div className="page">
 					<Header />
 					<Main
 						onEditAvatar={handleEditAvatarClick}
@@ -109,52 +104,12 @@ function App() {
 						cards={cards}
 					/>
 					<ImagePopup card={selectedCard} onClose={closeAllPopups} />
+					<EditProfilePopup
+						isOpen={isEditProfilePopupOpen}
+						onClose={closeAllPopups}
+						onUpdateUser={handleUpdateUser}
+					/>
 					<Footer />
-
-					<div class="popup popup-profile">
-						<div class="popup__container">
-							<form action="" class="form" novalidate>
-								<h2 class="form__header">Редактировать профиль</h2>
-								<fieldset class="form__feild">
-									<div class="form__conteiner">
-										<input
-											type="text"
-											class="form__input form__input-up"
-											id="input-name"
-											arial-label="Name"
-											placeholder="Имя"
-											name="name"
-											required
-											minlength="2"
-											maxlength="40"
-										/>
-										<span class="input-name-error form__input-error" />
-
-										<input
-											type="text"
-											class="form__input form__input-down"
-											id="input-description"
-											arial-label="Description"
-											placeholder="Описание"
-											name="description"
-											required
-											minlength="2"
-											maxlength="200"
-										/>
-										<span class="input-description-error form__input-error" />
-									</div>
-									<button class="form__save-button" type="submit">
-										Сохранить
-									</button>
-								</fieldset>
-								<button
-									class="form__close-button"
-									type="button"
-									onClick={closeAllPopups}
-								/>
-							</form>
-						</div>
-					</div>
 
 					<div class="popup popup-mesto">
 						<div class="popup__container">

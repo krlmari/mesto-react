@@ -39,7 +39,7 @@ class Api {
 			headers: this._headers,
 			body: JSON.stringify({
 				name: newUserInfo.name,
-				about: newUserInfo.description
+				about: newUserInfo.about
 			})
 		});
 	}
