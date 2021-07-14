@@ -156,22 +156,6 @@ function App() {
 						onAddPlace={handleAddPlaceSubmit}
 					/>
 					<Footer />
-
-					<div class="popup popup__delete-card">
-						<div class="popup__container popup__delete-container">
-							<form action="" class="form" novalidate>
-								<p class="popup__delete-text">Вы уверены?</p>
-								<button class="popup__delete-button" type="submit">
-									Да
-								</button>
-								<button
-									class="form__close-button"
-									type="button"
-									onClick={closeAllPopups}
-								/>
-							</form>
-						</div>
-					</div>
 				</div>
 			</div>
 		</CurrentUserContext.Provider>

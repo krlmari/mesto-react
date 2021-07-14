@@ -29,12 +29,10 @@ function Main(props) {
 						</button>
 					</div>
 					<div className="profile__text">
-						<div className="profile__name-and-edit">
-							<p className="profile__name">{currentUser.name}</p>
-							<button className="profile__edit-button" onClick={onEditProfile} />
-						</div>
+						<p className="profile__name">{currentUser.name}</p>
 						<p className="profile__description">{currentUser.about}</p>
 					</div>
+					<button className="profile__edit-button" onClick={onEditProfile} />
 				</div>
 				<button className="profile__add-button" onClick={onAddPlace} />
 			</section>
