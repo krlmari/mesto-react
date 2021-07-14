@@ -28,7 +28,7 @@
 	}
 }
 
-.elements__delete-active {
+.elements__delete_active {
 	visibility: visible;
 	opacity: 1;
 }

@@ -5,20 +5,7 @@ import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Main(props) {
-	const [ cards, setCards ] = React.useState([]);
-
 	const currentUser = React.useContext(CurrentUserContext);
-
-	React.useEffect(() => {
-		api
-			.getInitalCards()
-			.then((cards) => {
-				setCards(cards);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	}, []);
 
 	const onEditAvatar = () => {
 		props.onEditAvatar(props.onClick);
@@ -54,7 +41,7 @@ function Main(props) {
 			</section>
 
 			<section class="elements">
-				{cards.map((card) => (
+				{props.cards.map((card) => (
 					<Card key={card._id} card={card} onCardClick={props.onCardClick} />
 				))}
 			</section>

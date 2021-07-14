@@ -74,6 +74,13 @@ class Api {
 			headers: this._headers
 		});
 	}
+
+	changeLikeCardStatus(id, isLiked) {
+		return this._sendFetch(`cards/likes/${id}`, {
+			method: isLiked ? 'PUT' : 'DELETE',
+			headers: this._headers
+		});
+	}
 }
 
 const api = new Api({

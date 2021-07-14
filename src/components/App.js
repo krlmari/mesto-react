@@ -13,12 +13,24 @@ function App() {
 	const [ selectedCard, setSelectedCard ] = React.useState({ link: '', name: '' });
 
 	const [ currentUser, setCurrentUser ] = React.useState({});
+	const [ cards, setCards ] = React.useState([]);
 
 	React.useEffect(() => {
 		api
 			.getInitalInfo()
 			.then((res) => {
 				setCurrentUser(res);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	}, []);
+
+	React.useEffect(() => {
+		api
+			.getInitalCards()
+			.then((cards) => {
+				setCards(cards);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -66,6 +78,16 @@ function App() {
 		document.body.classList.remove('body__overflow');
 	};
 
+	function handleCardLike(card) {
+		// Снова проверяем, есть ли уже лайк на этой карточке
+		const isLiked = card.likes.some((item) => item._id === currentUser._id);
+
+		// Отправляем запрос в API и получаем обновлённые данные карточки
+		api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+			setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
+		});
+	}
+
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="App root">
@@ -76,6 +98,7 @@ function App() {
 						onEditProfile={handleEditProfileClick}
 						onAddPlace={handleAddPlaceClick}
 						onCardClick={handleCardClick}
+						cards={cards}
 					/>
 					<ImagePopup card={selectedCard} onClose={closeAllPopups} />
 					<Footer />
