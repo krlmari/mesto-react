@@ -30,6 +30,9 @@ function App() {
   const [userEmail, setUserEmail] = React.useState("");
   const history = useHistory();
 
+  const [authStatus, SetAuthStatus] = React.useState(false);
+  const [isRegisterPopupOpen, SetIsRegisterPopupOpen] = React.useState(false);
+
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
 
@@ -57,7 +60,6 @@ function App() {
     return auth
       .authorize(email, password)
       .then((data) => {
-        if (!data) throw new Error("Неверные имя пользователя или пароль");
         if (data.token) {
           setUserEmail(email);
           setLoggedIn(true);
@@ -75,13 +77,22 @@ function App() {
     return auth
       .register(email, password)
       .then((res) => {
-        if (res.data._id) {
+        SetIsRegisterPopupOpen(true);
+        if (res) {
+          SetAuthStatus(true);
           history.push("/sign-in");
         }
       })
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("jwt");
+    setUserEmail("");
+    setLoggedIn(false);
+    history.push("/sign-in");
   };
 
   const handleEditAvatarClick = () => {
@@ -104,6 +115,9 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+
+    SetIsRegisterPopupOpen(false);
+
     setSelectedCard({ link: "", name: "" });
   };
 
@@ -170,7 +184,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App root">
         <div className="page">
-          <Header getUserEmail={userEmail} />
+          <Header getUserEmail={userEmail} onSignOut={handleSignOut} />
 
           <Switch>
             <ProtectedRoute
@@ -211,7 +225,11 @@ function App() {
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
           />
-          <InfoTooltip isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
+          <InfoTooltip
+            authStatus={authStatus}
+            isOpen={isRegisterPopupOpen}
+            onClose={closeAllPopups}
+          />
 
           <Footer />
         </div>

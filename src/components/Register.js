@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Register(props) {
+function Register({ onRegister }) {
   const [userData, setUserData] = React.useState({
     email: "",
     password: "",
@@ -16,9 +16,8 @@ function Register(props) {
   };
 
   const handleSubmit = (e) => {
-    let { email, password } = userData;
     e.preventDefault();
-    props.onRegister({ email, password }).catch((err) => console.log(err));
+    onRegister(userData);
   };
 
   return (
@@ -39,7 +38,7 @@ function Register(props) {
           className="form__input auth__input"
           id="password-sign-up"
           name="password"
-          type="text"
+          type="password"
           placeholder="Password"
           onChange={handleChange}
           value={userData.password}

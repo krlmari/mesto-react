@@ -1,6 +1,6 @@
 import React from "react";
 
-function Login(props) {
+function Login({ onLogin }) {
   const [userData, setUserData] = React.useState({
     email: "",
     password: "",
@@ -15,9 +15,11 @@ function Login(props) {
   };
 
   const handleSubmit = (e) => {
-    let { email, password } = userData;
     e.preventDefault();
-    props.onLogin({ email, password }).catch((err) => console.log(err));
+    if (!userData.password || !userData.email) {
+      return;
+    }
+    onLogin(userData);
   };
 
   return (
@@ -38,7 +40,7 @@ function Login(props) {
           className="form__input auth__input"
           id="password-sign-in"
           name="password"
-          type="text"
+          type="password"
           placeholder="Password"
           value={userData.password}
           onChange={handleChange}

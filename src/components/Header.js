@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import logo from "../logo.svg";
 
-function Header() {
+function Header(props) {
   return (
     <header className="header">
       <a href="#" className="header__href">
@@ -20,7 +20,7 @@ function Header() {
         </Link>
       </Route>
       <Route exact path="/">
-        <Link to="/sign-in" className="header__sign-in">
+        <Link to="/sign-in" className="header__sign-in" onClick={props.onSignOut}>
           Выйти
         </Link>
       </Route>
