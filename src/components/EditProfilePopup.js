@@ -57,7 +57,6 @@ function EditProfilePopup(props) {
         value={name || ""}
         onChange={handleChangeUserName}
       />
-      <span className="input-name-error form__input-error" />
 
       <input
         type="text"
@@ -72,7 +71,6 @@ function EditProfilePopup(props) {
         value={description || ""}
         onChange={handleChangeUserDescription}
       />
-      <span className="input-description-error form__input-error" />
     </PopupWithForm>
   );
 }
