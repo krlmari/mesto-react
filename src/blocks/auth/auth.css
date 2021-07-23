@@ -1,0 +1,10 @@
+@import url(__button/auth__button.css);
+@import url(__form/auth__form.css);
+@import url(__in/auth__in.css);
+@import url(__input/auth__input.css);
+@import url(__sign-in/auth__sign-in.css);
+@import url(__title/auth__title.css);
+
+.auth {
+  text-align: center;
+}

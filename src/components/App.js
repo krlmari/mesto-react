@@ -172,30 +172,28 @@ function App() {
         <div className="page">
           <Header getUserEmail={userEmail} />
 
-          <BrowserRouter>
-            <Switch>
-              <ProtectedRoute
-                exact
-                path="/"
-                loggedIn={loggedIn}
-                component={Main}
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-                cards={cards}
-              />
+          <Switch>
+            <ProtectedRoute
+              exact
+              path="/"
+              loggedIn={loggedIn}
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+            />
 
-              <Route path="/sign-up">
-                <Register onRegister={handleRegister} />
-              </Route>
-              <Route path="/sign-in">
-                <Login onLogin={handleLogin} />
-              </Route>
-            </Switch>
-          </BrowserRouter>
+            <Route path="/sign-up">
+              <Register onRegister={handleRegister} />
+            </Route>
+            <Route path="/sign-in">
+              <Login onLogin={handleLogin} />
+            </Route>
+          </Switch>
 
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <EditProfilePopup

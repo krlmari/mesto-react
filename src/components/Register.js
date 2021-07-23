@@ -26,32 +26,34 @@ function Register(props) {
       <h2 className="auth__title">Регистрация</h2>
       <form className="auth__form" onSubmit={handleSubmit}>
         <input
-          className="auth__input"
+          className="form__input auth__input"
           id="email-sign-up"
           name="email"
-          type="text"
+          type="email"
           placeholder="Email"
           onChange={handleChange}
           value={userData.emali}
           required
         />
         <input
-          className="auth__input"
+          className="form__input auth__input"
           id="password-sign-up"
           name="password"
-          type="email"
+          type="text"
           placeholder="Password"
           onChange={handleChange}
           value={userData.password}
           required
         />
-        <button className="auth__button" type="submit">
+        <button className="form__save-button auth__button" type="submit">
           Зарегистрироваться
         </button>
       </form>
       <div className="auth__sign-in">
-        <p>Уже зарегистрированы? </p>
-        <Link to="/sign-in">Войти</Link>
+        <p>Уже зарегистрированы?&nbsp;</p>
+        <Link to="/sign-in" className="auth__in">
+          Войти
+        </Link>
       </div>
     </section>
   );
