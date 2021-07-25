@@ -17,7 +17,9 @@ function Register({ onRegister }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRegister(userData);
+    onRegister(userData).catch((err) => {
+      console.error(err);
+    });
   };
 
   return (
@@ -31,7 +33,7 @@ function Register({ onRegister }) {
           type="email"
           placeholder="Email"
           onChange={handleChange}
-          value={userData.emali}
+          value={userData.email}
           required
         />
         <input
@@ -50,7 +52,7 @@ function Register({ onRegister }) {
       </form>
       <div className="auth__sign-in">
         <p>Уже зарегистрированы?&nbsp;</p>
-        <Link to="/sign-in" className="auth__in">
+        <Link to="./sign-in" className="auth__in">
           Войти
         </Link>
       </div>

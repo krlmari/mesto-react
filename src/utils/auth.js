@@ -1,13 +1,14 @@
 export const BASE_URL = "https://auth.nomoreparties.co";
 
-export const register = (email, password) => {
+export const register = (userData) => {
+  console.log(userData);
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(userData),
   })
     .then((res) => {
       res.json();
@@ -15,14 +16,15 @@ export const register = (email, password) => {
     .catch((err) => console.log(err));
 };
 
-export const authorize = (email, password) => {
+export const authorize = (userData) => {
+  console.log(userData);
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(userData),
   })
     .then((res) => res.json())
     .catch((err) => console.log(err));

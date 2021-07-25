@@ -56,12 +56,12 @@ function App() {
       });
   }, []);
 
-  const handleLogin = ({ email, password }) => {
+  const handleLogin = (userData) => {
     return auth
-      .authorize(email, password)
+      .authorize(userData)
       .then((data) => {
         if (data.token) {
-          setUserEmail(email);
+          setUserEmail(userData.email);
           setLoggedIn(true);
           localStorage.setItem("jwt", data.token);
           history.push("/");
@@ -73,9 +73,9 @@ function App() {
       });
   };
 
-  const handleRegister = ({ email, password }) => {
+  const handleRegister = (userData) => {
     return auth
-      .register(email, password)
+      .register(userData)
       .then((res) => {
         SetIsRegisterPopupOpen(true);
         if (res) {

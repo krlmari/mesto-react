@@ -15,6 +15,7 @@ function Login({ onLogin }) {
   };
 
   const handleSubmit = (e) => {
+    console.log(userData);
     e.preventDefault();
     if (!userData.password || !userData.email) {
       return;
