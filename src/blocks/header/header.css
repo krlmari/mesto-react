@@ -1,6 +1,8 @@
 @import url(__logo/header__logo.css);
 @import url(__href/header__href.css);
 @import url(__sign-in/header__sign-in.css);
+@import url(__email-sign/header__email-sign.css);
+@import url(__email/header__email.css);
 
 .header {
   display: flex;
