@@ -33,7 +33,7 @@ function Login({ onLogin }) {
           name="email"
           type="email"
           placeholder="Email"
-          value={userData.email}
+          value={userData.email || ""}
           onChange={handleChange}
           required
         />
@@ -43,7 +43,7 @@ function Login({ onLogin }) {
           name="password"
           type="password"
           placeholder="Password"
-          value={userData.password}
+          value={userData.password || ""}
           onChange={handleChange}
           required
         />

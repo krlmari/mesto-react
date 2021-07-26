@@ -35,13 +35,17 @@ function App() {
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-
     if (jwt) {
-      auth.checkToken(jwt).then((res) => {
-        setLoggedIn(true);
-        setUserEmail(res.data.email);
-        history.push("/");
-      });
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          history.push("/");
+        })
+        .catch(() => {
+          localStorage.removeItem("jwt");
+        });
     }
   }, [history]);
 

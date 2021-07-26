@@ -33,7 +33,7 @@ function Register({ onRegister }) {
           type="email"
           placeholder="Email"
           onChange={handleChange}
-          value={userData.email}
+          value={userData.email || ""}
           required
         />
         <input
@@ -43,7 +43,7 @@ function Register({ onRegister }) {
           type="password"
           placeholder="Password"
           onChange={handleChange}
-          value={userData.password}
+          value={userData.password || ""}
           required
         />
         <button className="form__save-button auth__button" type="submit">

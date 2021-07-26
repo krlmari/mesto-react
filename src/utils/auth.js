@@ -11,13 +11,15 @@ export const register = (userData) => {
     body: JSON.stringify(userData),
   })
     .then((res) => {
-      res.json();
+      return res.json();
+    })
+    .then((res) => {
+      return res;
     })
     .catch((err) => console.log(err));
 };
 
 export const authorize = (userData) => {
-  console.log(userData);
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
@@ -27,6 +29,10 @@ export const authorize = (userData) => {
     body: JSON.stringify(userData),
   })
     .then((res) => res.json())
+    .then((data) => {
+      localStorage.setItem("jwt", data.token);
+      return data;
+    })
     .catch((err) => console.log(err));
 };
 
@@ -40,5 +46,8 @@ export const checkToken = (token) => {
     },
   })
     .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
     .catch((err) => console.log(err));
 };
