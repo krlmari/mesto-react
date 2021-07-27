@@ -82,7 +82,7 @@ function App() {
       .register(userData)
       .then((res) => {
         SetIsRegisterPopupOpen(true);
-        if (res) {
+        if (res.data._id) {
           SetAuthStatus(true);
           history.push("/sign-in");
         }

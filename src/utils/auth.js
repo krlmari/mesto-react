@@ -1,7 +1,6 @@
 export const BASE_URL = "https://auth.nomoreparties.co";
 
 export const register = (userData) => {
-  console.log(userData);
   return fetch(`${BASE_URL}/signup`, {
     method: "POST",
     headers: {
