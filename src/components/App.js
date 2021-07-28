@@ -69,7 +69,6 @@ function App() {
           setLoggedIn(true);
           localStorage.setItem("jwt", data.token);
           history.push("/");
-          return;
         }
       })
       .catch((err) => {
