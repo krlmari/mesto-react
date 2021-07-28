@@ -30,8 +30,8 @@ function App() {
   const [userEmail, setUserEmail] = React.useState("");
   const history = useHistory();
 
-  const [authStatus, SetAuthStatus] = React.useState(false);
-  const [isRegisterPopupOpen, SetIsRegisterPopupOpen] = React.useState(false);
+  const [authStatus, setAuthStatus] = React.useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -81,9 +81,9 @@ function App() {
     return auth
       .register(userData)
       .then((res) => {
-        SetIsRegisterPopupOpen(true);
+        setIsRegisterPopupOpen(true);
         if (res.data._id) {
-          SetAuthStatus(true);
+          setAuthStatus(true);
           history.push("/sign-in");
         }
       })
@@ -120,7 +120,7 @@ function App() {
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
 
-    SetIsRegisterPopupOpen(false);
+    setIsRegisterPopupOpen(false);
 
     setSelectedCard({ link: "", name: "" });
   };
