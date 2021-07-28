@@ -14,11 +14,11 @@ class Api {
     });
   }
 
-  getInitalCards() {
+  getInitialCards() {
     return this._sendFetch(`cards`, { headers: this._headers });
   }
 
-  getInitalInfo() {
+  getInitialInfo() {
     return this._sendFetch(`users/me`, { headers: this._headers });
   }
 

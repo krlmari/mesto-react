@@ -50,7 +50,7 @@ function App() {
   }, [history]);
 
   React.useEffect(() => {
-    Promise.all([api.getInitalCards(), api.getInitalInfo()])
+    Promise.all([api.getInitialCards(), api.getInitialInfo()])
       .then(([cards, info]) => {
         setCards(cards);
         setCurrentUser(info);
