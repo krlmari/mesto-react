@@ -1,0 +1,7 @@
+@import url(__container/infoTooltip__container.css);
+@import url(__image/infoTooltip__image.css);
+
+.infoTooltip {
+  text-align: center;
+  margin: 0 auto;
+}

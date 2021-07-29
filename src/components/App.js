@@ -1,4 +1,9 @@
 import React from "react";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+
 import Header from "./Header";
 import Main from "./Main";
 import EditProfilePopup from "./EditProfilePopup";
@@ -9,6 +14,9 @@ import Footer from "./Footer";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 
+import InfoTooltip from "./InfoTooltip";
+import * as auth from "../utils/auth";
+
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -18,8 +26,31 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
 
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState("");
+  const history = useHistory();
+
+  const [authStatus, setAuthStatus] = React.useState(false);
+  const [isRegisterPopupOpen, setIsRegisterPopupOpen] = React.useState(false);
+
   React.useEffect(() => {
-    Promise.all([api.getInitalCards(), api.getInitalInfo()])
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          setLoggedIn(true);
+          setUserEmail(res.data.email);
+          history.push("/");
+        })
+        .catch(() => {
+          localStorage.removeItem("jwt");
+        });
+    }
+  }, [history]);
+
+  React.useEffect(() => {
+    Promise.all([api.getInitialCards(), api.getInitialInfo()])
       .then(([cards, info]) => {
         setCards(cards);
         setCurrentUser(info);
@@ -28,6 +59,44 @@ function App() {
         console.error(err);
       });
   }, []);
+
+  const handleLogin = (userData) => {
+    return auth
+      .authorize(userData)
+      .then((data) => {
+        if (data.token) {
+          setUserEmail(userData.email);
+          setLoggedIn(true);
+          localStorage.setItem("jwt", data.token);
+          history.push("/");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleRegister = (userData) => {
+    return auth
+      .register(userData)
+      .then((res) => {
+        setIsRegisterPopupOpen(true);
+        if (res.data._id) {
+          setAuthStatus(true);
+          history.push("/sign-in");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("jwt");
+    setUserEmail("");
+    setLoggedIn(false);
+    history.push("/sign-in");
+  };
 
   const handleEditAvatarClick = () => {
     setEditAvatarPopupOpen(true);
@@ -49,14 +118,14 @@ function App() {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+
+    setIsRegisterPopupOpen(false);
+
     setSelectedCard({ link: "", name: "" });
   };
 
   function handleCardLike(card) {
-    // Проверяем, есть ли уже лайк на этой карточке
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
-
-    // Отправляем запрос в API и получаем обновлённые данные карточки
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -118,16 +187,31 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App root">
         <div className="page">
-          <Header />
-          <Main
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cards={cards}
-          />
+          <Header getUserEmail={userEmail} onSignOut={handleSignOut} />
+
+          <Switch>
+            <ProtectedRoute
+              exact
+              path="/"
+              loggedIn={loggedIn}
+              component={Main}
+              onEditAvatar={handleEditAvatarClick}
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+              cards={cards}
+            />
+
+            <Route path="/sign-up">
+              <Register onRegister={handleRegister} />
+            </Route>
+            <Route path="/sign-in">
+              <Login onLogin={handleLogin} />
+            </Route>
+          </Switch>
+
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <EditProfilePopup
             isOpen={isEditProfilePopupOpen}
@@ -144,6 +228,12 @@ function App() {
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
           />
+          <InfoTooltip
+            authStatus={authStatus}
+            isOpen={isRegisterPopupOpen}
+            onClose={closeAllPopups}
+          />
+
           <Footer />
         </div>
       </div>

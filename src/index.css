@@ -17,3 +17,7 @@
 @import url(blocks/popup/__card/popup__card.css);
 
 @import url(blocks/form/form.css);
+
+@import url(blocks/auth/auth.css);
+
+@import url(blocks/infoTooltip/infoTooltip.css);
